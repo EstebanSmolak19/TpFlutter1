@@ -7,15 +7,22 @@ import 'package:appcours/components/BottomNavigationBar.dart';
 import 'package:appcours/theme/ThemeSwitcher.dart';
 
 class CustomAppScaffold extends StatefulWidget {
-  const CustomAppScaffold({super.key});
+  final Widget? child;
+  final bool? initialDarkMode;
+  
+  const CustomAppScaffold({
+    super.key, 
+    this.child,
+    this.initialDarkMode, 
+  });
 
   @override
-  State<CustomAppScaffold> createState() => _CustomAppScaffoldState();
+  State<CustomAppScaffold> createState() => CustomAppScaffoldState();
 }
 
-class _CustomAppScaffoldState extends State<CustomAppScaffold> {
+class CustomAppScaffoldState extends State<CustomAppScaffold> {
   int _currentIndex = 0;
-  bool _isDarkMode = false;
+  late bool isDarkMode;
 
   final List<Widget> _pages = const [
     HomePage(),
@@ -29,6 +36,12 @@ class _CustomAppScaffoldState extends State<CustomAppScaffold> {
     'Profil',
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    isDarkMode = widget.initialDarkMode ?? false;
+  }
+
   void _onNavTap(int index) {
     setState(() {
       _currentIndex = index.clamp(0, _pages.length - 1);
@@ -37,7 +50,7 @@ class _CustomAppScaffoldState extends State<CustomAppScaffold> {
 
   @override
   Widget build(BuildContext context) {
-        final ThemeData currentTheme = _isDarkMode
+    final ThemeData currentTheme = isDarkMode
         ? ThemeData.dark(useMaterial3: true).copyWith(
             colorScheme: const ColorScheme.dark(
               primary: Colors.deepPurple,
@@ -50,34 +63,37 @@ class _CustomAppScaffoldState extends State<CustomAppScaffold> {
               secondary: Colors.deepPurpleAccent,
             ),
           );
+
     return Theme(
       data: currentTheme,
       child: Scaffold(
-        drawer: buildDrawer(context, onSelect: (index) {
-          _onNavTap(index);
-        }),
+        drawer: widget.child == null
+            ? buildDrawer(context, onSelect: _onNavTap)
+            : null,
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 113, 104, 104),
           title: Text(
-            _titles[_currentIndex],
+            widget.child == null ? _titles[_currentIndex] : '',
             style: const TextStyle(color: Colors.white),
           ),
           actions: [
             ThemeSwitcher(
-              initialDarkMode: _isDarkMode,
+              initialDarkMode: isDarkMode,
               onChanged: (value) {
                 setState(() {
-                  _isDarkMode = value;
+                  isDarkMode = value;
                 });
               },
             ),
           ],
         ),
-        body: _pages[_currentIndex],
-        bottomNavigationBar: customBottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: _onNavTap,
-        ),
+        body: widget.child ?? _pages[_currentIndex],
+        bottomNavigationBar: widget.child == null
+            ? customBottomNavigationBar(
+                currentIndex: _currentIndex,
+                onTap: _onNavTap,
+              )
+            : null,
       ),
     );
   }

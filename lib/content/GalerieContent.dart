@@ -1,3 +1,5 @@
+import 'package:appcours/components/CustomAppScaffold.dart';
+import 'package:appcours/content/ImageDetailContent.dart';
 import 'package:flutter/material.dart';
 
 class GalerieContent extends StatelessWidget {
@@ -32,32 +34,53 @@ class GalerieContent extends StatelessWidget {
 
                       return Column(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              img,
-                              width: 110,
-                              height: 110,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (context, child, progress) {
-                                if (progress == null) return child;
-                                return Container(
-                                  width: 110,
-                                  height: 110,
-                                  alignment: Alignment.center,
-                                  child: const CircularProgressIndicator(
-                                    strokeWidth: 2,
+                          GestureDetector(
+                            onTap: () {
+                              final scaffoldState = context.findAncestorStateOfType<CustomAppScaffoldState>();
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CustomAppScaffold(
+                                    initialDarkMode: scaffoldState?.isDarkMode ?? false,
+                                    child: ImageDetailContent(
+                                      imageUrl: img, 
+                                      index: imgIndex,
+                                    ),
                                   ),
-                                );
-                              },
+                                ),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.network(
+                                img,
+                                width: 110,
+                                height: 110,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (context, child, progress) {
+                                  if (progress == null) return child;
+                                  return Container(
+                                    width: 110,
+                                    height: 110,
+                                    alignment: Alignment.center,
+                                    child: const CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           const SizedBox(height: 6),
                           Text(
                             'Image $imgIndex',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
                                   fontWeight: FontWeight.w500,
-                                  color: textColor, // couleur du thème
+                                  color: textColor,
                                 ),
                           ),
                         ],

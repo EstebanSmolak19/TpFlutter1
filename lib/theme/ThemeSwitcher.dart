@@ -23,11 +23,22 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
     _isDarkMode = widget.initialDarkMode;
   }
 
+  // AJOUT : Synchronise avec les changements externes
+  @override
+  void didUpdateWidget(ThemeSwitcher oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialDarkMode != oldWidget.initialDarkMode) {
+      setState(() {
+        _isDarkMode = widget.initialDarkMode;
+      });
+    }
+  }
+
   void _toggleTheme() {
     setState(() {
       _isDarkMode = !_isDarkMode;
     });
-    widget.onChanged(_isDarkMode); // informe le parent du changement
+    widget.onChanged(_isDarkMode);
   }
 
   @override
