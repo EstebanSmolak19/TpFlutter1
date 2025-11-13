@@ -20,17 +20,26 @@ Widget buildDrawer(BuildContext context, {required Function(int) onSelect}) {
         ListTile(
           leading: const Icon(Icons.home),
           title: const Text('Home'),
-          onTap: () => onSelect(0),
+          onTap: () => {
+            Navigator.pop(context),
+            onSelect(0),
+          }
         ),
         ListTile(
           leading: const Icon(Icons.photo),
           title: const Text('Galerie'),
-          onTap: () => onSelect(1),
+          onTap: () => {
+            Navigator.pop(context),
+            onSelect(1),
+          }
         ),
         ListTile(
           leading: const Icon(Icons.person),
           title: const Text('Profil'),
-          onTap: () => onSelect(2),
+          onTap: () => {
+            Navigator.pop(context),
+            onSelect(2),
+          }
         ),
       ],
     ),

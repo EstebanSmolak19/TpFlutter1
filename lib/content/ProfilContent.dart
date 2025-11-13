@@ -5,17 +5,20 @@ class ProfileContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).textTheme.bodyMedium?.color;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Avatar avec ombre
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.shade300,
+                  color: Colors.grey.withOpacity(0.2),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -28,25 +31,28 @@ class ProfileContent extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          const Text(
+          // Nom
+          Text(
             "Matheo le BG",
-            style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF222222),
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: textColor,
+                  fontSize: 22,
+                ),
           ),
           const SizedBox(height: 4),
 
-          const Text(
+          // Email
+          Text(
             "root@gmail.com",
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: textColor?.withOpacity(0.7),
+                  fontSize: 14,
+                ),
           ),
           const SizedBox(height: 24),
 
+          // Boutons
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -55,12 +61,13 @@ class ProfileContent extends StatelessWidget {
                 icon: const Icon(Icons.edit, size: 18),
                 label: const Text("Modifier"),
                 style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
                   side: BorderSide(color: Colors.grey.shade400),
-                  foregroundColor: Colors.black87,
+                  foregroundColor: textColor,
                 ),
               ),
               const SizedBox(width: 16),
@@ -69,7 +76,8 @@ class ProfileContent extends StatelessWidget {
                 icon: const Icon(Icons.logout, size: 18),
                 label: const Text("Se déconnecter"),
                 style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -81,46 +89,41 @@ class ProfileContent extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
+          // Infos téléphone / adresse 
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey[850]
+                  : Colors.grey[200],
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade200,
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: Column(
-              children: const [
+              children: [
                 ListTile(
-                  leading: Icon(Icons.phone, color: Colors.black87),
-                  title: Text("Téléphone"),
-                  subtitle: Text("+33 6 12 34 56 78"),
+                  leading: Icon(Icons.phone, color: textColor),
+                  title: Text(
+                    "Téléphone",
+                    style: TextStyle(color: textColor),
+                  ),
+                  subtitle: Text(
+                    "+33 6 12 34 56 78",
+                    style: TextStyle(color: textColor?.withOpacity(0.7)),
+                  ),
                 ),
-                Divider(height: 1),
+                Divider(
+                  height: 1,
+                  color: textColor?.withOpacity(0.3),
+                ),
                 ListTile(
-                  leading: Icon(Icons.location_on, color: Colors.black87),
-                  title: Text("Adresse"),
-                  subtitle: Text("123 Rue Exemple, Paris, France"),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 24),
-
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.shade200,
-                  blurRadius: 8,
-                  offset: const Offset(0, 3),
+                  leading: Icon(Icons.location_on, color: textColor),
+                  title: Text(
+                    "Adresse",
+                    style: TextStyle(color: textColor),
+                  ),
+                  subtitle: Text(
+                    "123 Rue Exemple, Paris, France",
+                    style: TextStyle(color: textColor?.withOpacity(0.7)),
+                  ),
                 ),
               ],
             ),
